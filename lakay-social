@@ -1,0 +1,156 @@
+lakay-social/
+├─ index.html
+├─ package.json
+├─ vite.config.js
+├─ tailwind.config.js
+├─ postcss.config.js
+└─ src/
+   ├─ main.jsx
+   ├─ App.jsx
+   ├─ index.css
+   ├─ pages/
+   │  ├─ Home.jsx
+   │  ├─ LakayLife.jsx
+   │  └─ Topic.jsx
+   └─ components/
+      └─ Navbar.jsx
+{
+  "name": "lakay-social",
+  "private": true,
+  "version": "0.0.1",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.22.3"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.2.1",
+    "autoprefixer": "^10.4.18",
+    "postcss": "^8.4.35",
+    "tailwindcss": "^3.4.1",
+    "vite": "^5.1.0"
+  }
+}
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+
+export default defineConfig({
+  plugins: [react()]
+})
+export default {
+  content: ["./index.html", "./src/**/*.{js,jsx}"],
+  theme: {
+    extend: {}
+  },
+  plugins: []
+}
+export default {
+  plugins: {
+    tailwindcss: {},
+    autoprefixer: {}
+  }
+}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import { BrowserRouter } from 'react-router-dom'
+import App from './App'
+import './index.css'
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <BrowserRouter>
+    <App />
+  </BrowserRouter>
+)
+import { Routes, Route } from "react-router-dom"
+import Home from "./pages/Home"
+import LakayLife from "./pages/LakayLife"
+import Topic from "./pages/Topic"
+import Navbar from "./components/Navbar"
+
+export default function App() {
+  return (
+    <>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/lakay-life" element={<LakayLife />} />
+        <Route path="/topic/:name" element={<Topic />} />
+      </Routes>
+    </>
+  )
+}
+import { Link } from "react-router-dom"
+
+export default function Navbar() {
+  return (
+    <nav className="p-4 bg-black text-white flex justify-between">
+      <Link to="/" className="font-bold">Lakay Social</Link>
+      <Link to="/lakay-life">Lakay Life</Link>
+    </nav>
+  )
+}
+export default function Home() {
+  return (
+    <div className="p-6">
+      <h1 className="text-3xl font-bold mb-2">Lakay Social</h1>
+      <p className="text-gray-600">
+        A digital home for the Haitian community.
+      </p>
+    </div>
+  )
+}
+import { Link } from "react-router-dom"
+
+const topics = [
+  "Family Advice",
+  "Marriage Advice",
+  "Haitian Parents",
+  "Relationships",
+  "Fake Diaspora",
+  "Living Abroad",
+  "Laws We Should Know",
+  "Do’s & Don’ts"
+]
+
+export default function LakayLife() {
+  return (
+    <div className="p-6">
+      <h2 className="text-2xl font-bold mb-4">Lakay Life</h2>
+      <div className="grid grid-cols-2 gap-4">
+        {topics.map(t => (
+          <Link
+            key={t}
+            to={`/topic/${t}`}
+            className="p-4 border rounded-lg hover:bg-gray-100"
+          >
+            {t}
+          </Link>
+        ))}
+      </div>
+    </div>
+  )
+}
+import { useParams } from "react-router-dom"
+
+export default function Topic() {
+  const { name } = useParams()
+
+  return (
+    <div className="p-6">
+      <h2 className="text-2xl font-bold mb-2">{name}</h2>
+      <p className="text-gray-600">
+        Community discussions coming soon.
+      </p>
+    </div>
+  )
+}
+
